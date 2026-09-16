@@ -20,7 +20,6 @@
         /// </summary>
         public required User User { get; set; }
 
-
         /// <summary>
         /// Идентификатор проекта
         /// </summary>

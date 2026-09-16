@@ -18,7 +18,6 @@
         /// <summary>
         /// Группа, к которой пренадлежит студент
         /// </summary>
-
         public required StudentGroupNumber StudentGroupNumber { get; set; }
 
         /// <summary>
@@ -31,6 +30,9 @@
         /// </summary>
         public string? AvatarUrl { get; set; }
 
+        /// <summary>
+        /// Описание пользователя
+        /// </summary>
         public string Description = string.Empty;
     }
 }

@@ -15,19 +15,16 @@ namespace Domain.Entities
         /// <summary>
         /// Идентификатор справочного навыка
         /// </summary>
-
         public required Guid SkillId { get; set; }
 
         /// <summary>
         /// Навык справочного
         /// </summary>
-
         public required Skill Skill { get; set; }
 
         /// <summary>
         /// Степень владения навыком
         /// </summary>
-
         public SkillLevel SkillLevel { get; set; }
     }
 }

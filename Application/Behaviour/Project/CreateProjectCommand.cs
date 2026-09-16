@@ -1,48 +1,30 @@
 ﻿using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 
 namespace Application.Behaviour.Project
 {
-    public class CreateProjectCommand : IRequest
+    public record CreateProjectCommand : IRequest
     {
-        /// <summary>
-        /// Название проекта
-        /// </summary>
-        public string? Name { get; set; }
-
-        /// <summary>
-        /// Описание проекта
-        /// </summary>
-        public string? Description { get; set; }
-
-        /// <summary>
-        /// Идентефикатор владельца проекта
-        /// </summary>
+        public required string Name { get; set; }
+        public required string Description { get; set; }
         public required Guid OwnerId { get; set; }
-
-        /// <summary>
-        /// Требуемые вакансии
-        /// </summary>
-        public List<ProjectPosition> RequiredPositions = [];
-
-        /// <summary>
-        /// Ссылки на внешние ресурсы проекта
-        /// </summary>
-        public List<Guid> InternetResourceLinkIds = [];
-
-        /// <summary>
-        /// Вложения проекта
-        /// </summary>
-        public List<string> Attachments = [];
-
-        /// <summary>
-        /// Можно ли оставить заявку в проект даже тогда, когда набор закрыт?
-        /// </summary>
+        public List<CreateProjectPosition> RequiredPositions = [];
+        public List<CreateInternetResourceLink> InternetResourceLinks = [];
+        public List<Guid> AttachmentIds = [];
         public required bool IsAdditionalRecruitmentAllowed = false;
-
-        /// <summary>
-        /// Можно ли оставлять заявку в проект людям, у которых не полное совпадение по наывкам
-        /// </summary>
         public required bool IsStrictCandidatesSelection = false;
+
+        public record CreateInternetResourceLink
+        {
+            public required InternetResourceLinkType Type { get; set; }
+            public required string Url { get; set; }
+        }
+
+        public record CreateProjectPosition
+        {
+            public required string Name { get; set; }
+            public List<Guid> RequiredSkillIds { get; set; } = [];
+        }
     }
 }

@@ -11,9 +11,13 @@
         public required Guid Id { get; set; }
 
         /// <summary>
+        /// Имя вакансии
+        /// </summary>
+        public required string Name { get; set; }
+
+        /// <summary>
         /// Перечень требуемых навыков кандидата
         /// </summary>
-
         public List<UserSkill> RequiredSkills { get; set; } = [];
 
         /// <summary>
