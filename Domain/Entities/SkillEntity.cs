@@ -1,17 +1,17 @@
 ﻿namespace Domain.Entities
 {
     /// <summary>
-    /// Справочный номер группы студента
+    /// Возможный навык - справочное значение
     /// </summary>
-    public class StudentGroupNumber
+    public class SkillEntity
     {
         /// <summary>
-        /// Идентификатор номера группы
+        /// Идентификатор навыка
         /// </summary>
         public required Guid Id { get; set; }
 
         /// <summary>
-        /// Название номера группы
+        /// Название навыка
         /// </summary>
         public required string Name { get; set; }
     }

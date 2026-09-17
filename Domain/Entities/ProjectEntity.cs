@@ -3,7 +3,7 @@
     /// <summary>
     /// Проект
     /// </summary>
-    public class Project
+    public class ProjectEntity
     {
         /// <summary>
         /// Идентефикатор проекта
@@ -28,22 +28,22 @@
         /// <summary>
         /// Владелец проекта
         /// </summary>
-        public required User Owner { get; set; }
+        public UserEntity Owner { get; set; }
         
         /// <summary>
         /// Список участников проекта
         /// </summary>
-        public List<ProjectMember> ProjectMembers { get; set; } = [];
+        public List<ProjectMemberEntity> ProjectMembers { get; set; } = [];
 
         /// <summary>
         /// Требуемые вакансии
         /// </summary>
-        public List<ProjectPosition> RequiredPositions = [];
+        public List<ProjectPositionEntity> RequiredPositions = [];
 
         /// <summary>
         /// Ссылки на внешние ресурсы проекта
         /// </summary>
-        public List<InternetResourceLink> InternetResourceLinks = [];
+        public List<InternetResourceLinkEntity> InternetResourceLinks = [];
 
         /// <summary>
         /// Вложения проекта

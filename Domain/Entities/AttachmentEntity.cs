@@ -5,7 +5,7 @@ namespace Domain.Entities
     /// <summary>
     /// Пользователськое влоежние
     /// </summary>
-    public class Attachment
+    public class AttachmentEntity
     {
         /// <summary>
         /// Идентефикатор вложения
@@ -20,7 +20,7 @@ namespace Domain.Entities
         /// <summary>
         /// Пользователь, загрузивший файл
         /// </summary>
-        public required User User { get; set; }
+        public required UserEntity User { get; set; }
 
         /// <summary>
         /// Тип вложения

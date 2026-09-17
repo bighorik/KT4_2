@@ -3,7 +3,7 @@
     /// <summary>
     /// Участник проекта
     /// </summary>
-    public class ProjectMember
+    public class ProjectMemberEntity
     {
         /// <summary>
         /// Идентефикатор участника проекта
@@ -18,7 +18,7 @@
         /// <summary>
         /// Пользователь
         /// </summary>
-        public required User User { get; set; }
+        public required UserEntity User { get; set; }
 
         /// <summary>
         /// Идентификатор проекта
@@ -28,6 +28,6 @@
         /// <summary>
         /// Проект 
         /// </summary>
-        public required Project Project { get; set; }
+        public required ProjectEntity Project { get; set; }
     }
 }

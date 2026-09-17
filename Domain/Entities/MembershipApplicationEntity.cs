@@ -3,7 +3,7 @@
     /// <summary>
     /// Заявка на вступление в проект
     /// </summary>
-    public class MembershipApplication
+    public class MembershipApplicationEntity
     {
         /// <summary>
         /// Идентефикатор заявки на вступление
@@ -18,7 +18,7 @@
         /// <summary>
         /// Пользователь
         /// </summary>
-        public required User User { get; set; }
+        public required UserEntity User { get; set; }
 
         /// <summary>
         /// Идентификатор проекта
@@ -28,7 +28,7 @@
         /// <summary>
         /// Проект 
         /// </summary>
-        public required Project Project { get; set; }
+        public required ProjectEntity Project { get; set; }
 
         /// <summary>
         /// Сопроводительное письмо заявки

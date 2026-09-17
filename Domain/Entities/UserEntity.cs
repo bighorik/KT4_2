@@ -3,7 +3,7 @@
     /// <summary>
     /// Пользователь сервиса
     /// </summary>
-    public class User
+    public class UserEntity
     {
         /// <summary>
         /// Идентификатор пользователя
@@ -18,12 +18,12 @@
         /// <summary>
         /// Группа, к которой пренадлежит студент
         /// </summary>
-        public required StudentGroupNumber StudentGroupNumber { get; set; }
+        public required StudentGroupNumberEntity StudentGroupNumber { get; set; }
 
         /// <summary>
         /// Список навыков, которыми студент владеет
         /// </summary>
-        public List<UserSkill> SkillList { get; set; } = [];
+        public List<UserSkillEntity> SkillList { get; set; } = [];
 
         /// <summary>
         /// Ссылка на аватарку

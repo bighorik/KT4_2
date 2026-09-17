@@ -5,7 +5,7 @@ namespace Domain.Entities
     /// <summary>
     /// Навык пользователя
     /// </summary>
-    public class UserSkill
+    public class PositionSkillEntity
     {
         /// <summary>
         /// Идентификатор навыка пользователя
@@ -15,16 +15,26 @@ namespace Domain.Entities
         /// <summary>
         /// Идентификатор справочного навыка
         /// </summary>
-        public required Guid SkillId { get; set; }
+        public Guid SkillId { get; set; }
 
         /// <summary>
         /// Навык справочного
         /// </summary>
-        public required Skill Skill { get; set; }
+        public SkillEntity Skill { get; set; }
 
         /// <summary>
         /// Степень владения навыком
         /// </summary>
         public SkillLevel SkillLevel { get; set; }
+
+        /// <summary>
+        /// Идентификатор вакансии
+        /// </summary>
+        public Guid ProjectPositionId { get; set; }
+
+        /// <summary>
+        /// Вакансия
+        /// </summary>
+        public ProjectPositionEntity ProjectPosition { get; set; }
     }
 }

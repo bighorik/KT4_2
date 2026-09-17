@@ -5,7 +5,7 @@ namespace Domain.Entities
     /// <summary>
     /// Ссылка на страницу проекта
     /// </summary>
-    public class InternetResourceLink
+    public class InternetResourceLinkEntity
     {
         /// <summary>
         /// Идентефикатор ссылки
@@ -25,11 +25,11 @@ namespace Domain.Entities
         /// <summary>
         /// Идентификатор проекта
         /// </summary>
-        public required Guid ProjectId { get; set; }
+        public Guid ProjectId { get; set; }
 
         /// <summary>
         /// Проект 
         /// </summary>
-        public required Project Project { get; set; }
+        public ProjectEntity Project { get; set; }
     }
 }
