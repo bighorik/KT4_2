@@ -1,11 +1,12 @@
-﻿using Application.Utils;
+﻿using Application.Interfaces.Repositories.BaseRepositories;
 using Domain.Entities;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IProjectPositionRepository
+    public interface IProjectPositionRepository :
+        IExistsRepository,
+        ICreateRepository<ProjectPositionEntity>,
+        IDeleteByIdRepository
     {
-        Task<RepositoryResult<ProjectPositionEntity>> AddPositionAsync(ProjectPositionEntity entity);
-
     }
 }

@@ -29,16 +29,6 @@
         }
     }
 
-
-
-
-
-
-
-
-
-
-
     public class ResponseContract
     {
         public bool Ok { get; set; } = true;

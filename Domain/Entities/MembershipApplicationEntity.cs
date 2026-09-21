@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using Domain.Enums;
+
+namespace Domain.Entities
 {
     /// <summary>
     /// Заявка на вступление в проект
@@ -18,7 +20,7 @@
         /// <summary>
         /// Пользователь
         /// </summary>
-        public required UserEntity User { get; set; }
+        public UserEntity User { get; set; }
 
         /// <summary>
         /// Идентификатор проекта
@@ -28,11 +30,16 @@
         /// <summary>
         /// Проект 
         /// </summary>
-        public required ProjectEntity Project { get; set; }
+        public ProjectEntity Project { get; set; }
 
         /// <summary>
         /// Сопроводительное письмо заявки
         /// </summary>
         public string Message { get; set; } = "";
+
+        /// <summary>
+        /// Статус заявки
+        /// </summary>
+        public required MembershipApplicationStatus Status { get; set; }
     }
 }

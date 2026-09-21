@@ -1,8 +1,6 @@
 
-using Application.Behaviour.Categories;
-using Application.Interfaces.Repositories;
+using Application.Behaviour.Users;
 using Persistence;
-using Persistence.Repositories;
 
 namespace KT4_2
 {
@@ -19,10 +17,9 @@ namespace KT4_2
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblyContaining(typeof(CreateCategoryCommand)));
+            builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblyContaining(typeof(CreateUserCommand)));
             builder.Services.AddDbContext<ApplicationContext>();
 
-            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             var app = builder.Build();
 

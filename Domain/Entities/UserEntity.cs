@@ -16,14 +16,19 @@
         public required string NickName { get; set; }
 
         /// <summary>
+        /// Почта пользователя
+        /// </summary>
+        public required string Email { get; set; }
+
+        /// <summary>
+        /// Почта пользователя
+        /// </summary>
+        public required string PasswordHash { get; set; }
+
+        /// <summary>
         /// Группа, к которой пренадлежит студент
         /// </summary>
         public required StudentGroupNumberEntity StudentGroupNumber { get; set; }
-
-        /// <summary>
-        /// Список навыков, которыми студент владеет
-        /// </summary>
-        public List<UserSkillEntity> SkillList { get; set; } = [];
 
         /// <summary>
         /// Ссылка на аватарку
@@ -34,6 +39,16 @@
         /// Описание пользователя
         /// </summary>
         public string Description = string.Empty;
+
+        /// <summary>
+        /// Почта подтверждена?
+        /// </summary>
+        public bool EmailConfirmed = false;
+
+        /// <summary>
+        /// Скиллы пользователя
+        /// </summary>
+        public List<UserSkillEntity> UserSkills { get; set; } = [];
     }
 }
 

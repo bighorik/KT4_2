@@ -16,9 +16,14 @@
         public required string Name { get; set; }
 
         /// <summary>
+        /// Описание позиции
+        /// </summary>
+        public string? Description { get; set; } = "";
+
+        /// <summary>
         /// Перечень требуемых навыков кандидата
         /// </summary>
-        public List<PositionSkillEntity> RequiredSkills { get; set; } = [];
+        public List<PositionSkillEntity> PositionSkills { get; set; } = [];
 
         /// <summary>
         /// Идентификатор проекта вакансии

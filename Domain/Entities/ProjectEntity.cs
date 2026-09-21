@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using Domain.Enums;
+
+namespace Domain.Entities
 {
     /// <summary>
     /// Проект
@@ -29,7 +31,7 @@
         /// Владелец проекта
         /// </summary>
         public UserEntity Owner { get; set; }
-        
+
         /// <summary>
         /// Список участников проекта
         /// </summary>
@@ -48,7 +50,12 @@
         /// <summary>
         /// Вложения проекта
         /// </summary>
-        public List<string> Attachments = [];
+        public List<AttachmentEntity> Attachments = [];
+
+        /// <summary>
+        /// Текущий статус проекта
+        /// </summary>
+        public required ProjectStatus Status { get; set; }
 
         /// <summary>
         /// Можно ли оставить заявку в проект даже тогда, когда набор закрыт?
@@ -58,6 +65,6 @@
         /// <summary>
         /// Можно ли оставлять заявку в проект людям, у которых не полное совпадение по наывкам
         /// </summary>
-        public required bool IsStrictCandidatesSelection = false;
+        public required bool IsStrictCandidatesSelection = true;
     }
 }

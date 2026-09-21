@@ -36,5 +36,10 @@ namespace Domain.Entities
         /// Пользователь, загрузивший файл
         /// </summary>
         public required UserEntity User { get; set; }
+
+        /// <summary>
+        /// Скиллы пользователя
+        /// </summary>
+        public List<UserSkillEntity> UserSkills { get; set; } = [];
     }
 }

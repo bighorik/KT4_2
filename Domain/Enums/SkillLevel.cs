@@ -2,6 +2,7 @@
 {
     public enum SkillLevel
     {
+        None = 0,
         Low,
         BelowMedium,
         Medium,

@@ -16,9 +16,14 @@
         Recruting,
 
         /// <summary>
+        /// В процессе набора команды
+        /// </summary>
+        RecrutingCompleted,
+
+        /// <summary>
         /// Набор завершен
         /// </summary>
-        Completed,
+        ProjectCompleted,
 
         /// <summary>
         /// Архив
