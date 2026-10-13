@@ -13,7 +13,7 @@
         /// <summary>
         /// Никнейм пользователя
         /// </summary>
-        public required string NickName { get; set; }
+        public required string Nickname { get; set; }
 
         /// <summary>
         /// Почта пользователя
@@ -26,9 +26,14 @@
         public required string PasswordHash { get; set; }
 
         /// <summary>
-        /// Группа, к которой пренадлежит студент
+        /// Id группы, к которой пренадлежит студент
         /// </summary>
-        public required StudentGroupNumberEntity StudentGroupNumber { get; set; }
+        public required Guid StudentGroupNumberId { get; set; }
+
+        /// <summary>
+        /// Id группы, к которой пренадлежит студент
+        /// </summary>
+        public StudentGroupNumberEntity StudentGroupNumber { get; set; }
 
         /// <summary>
         /// Ссылка на аватарку
@@ -38,17 +43,22 @@
         /// <summary>
         /// Описание пользователя
         /// </summary>
-        public string Description = string.Empty;
+        public string Description { get; set; } = string.Empty;
 
         /// <summary>
         /// Почта подтверждена?
         /// </summary>
-        public bool EmailConfirmed = false;
+        public bool EmailConfirmed { get; set; } = false;
 
         /// <summary>
         /// Скиллы пользователя
         /// </summary>
-        public List<UserSkillEntity> UserSkills { get; set; } = [];
+        public List<UserSkillEntity> Skills { get; set; } = [];
+
+        /// <summary>
+        /// Контакты пользователя
+        /// </summary>
+        public List<UserContactEntity> Contacts { get; set; } = [];
     }
 }
 

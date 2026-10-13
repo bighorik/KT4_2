@@ -34,5 +34,9 @@
         /// Проект вакансии
         /// </summary>
         public ProjectEntity Project { get; set; }
+
+        public List<MembershipApplicationEntity> MembershipApplications { get; set; } = [];
+
+        public ProjectMemberEntity? ProjectMember { get; set; }
     }
 }

@@ -14,5 +14,10 @@
         /// Название номера группы
         /// </summary>
         public required string Name { get; set; }
+
+        /// <summary>
+        /// Является ли архивным?
+        /// </summary>
+        public required bool IsArchived { get; set; } = false;
     }
 }

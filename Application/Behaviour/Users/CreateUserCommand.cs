@@ -1,18 +1,16 @@
 ﻿using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Application.Utils;
-using BCrypt.Net;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
-using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
 namespace Application.Behaviour.Users
 {
     public class CreateUserCommand : IRequest<ResponseContract<UserEntity>>
     {
-        public required string NickName { get; set; }
+        public required string Nickname { get; set; }
         public required string Email { get; set; }
         public required string Password { get; set; }
         public required Guid StudentGroupNumberId { get; set; }
@@ -24,7 +22,7 @@ namespace Application.Behaviour.Users
         IAccountConfirmationCodeRepository codeRepository,
         ICryptoService cryptoService,
         IUnitOfWork unitOfWork,
-        IStudentGroupRepository studentGroupRepository
+        IStudentGroupNumberRepository groupRepository
         ) : IRequestHandler<CreateUserCommand, ResponseContract<UserEntity>>
     {
         public async Task<ResponseContract<UserEntity>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -38,22 +36,23 @@ namespace Application.Behaviour.Users
                 AccountConfirmationCodeEntity? codeEntity = await codeRepository.GetByEmailAsync(request.Email);
                 if (codeEntity != null)
                     return new ResponseContract<UserEntity>(ErrorCodes.AccountConfirmationCodeAlreadySent);
+
+                await userRepository.DeleteNotConfirmedByEmail(request.Email);
             }
 
-            if (!await studentGroupRepository.ExistsAsync(request.StudentGroupNumberId))
+            if (!await groupRepository.ExistsAsync(request.StudentGroupNumberId))
                 return new ResponseContract<UserEntity>(ErrorCodes.StudentGroupNotFound);
 
             string passwordHash = cryptoService.GetPasswordHash(request.Password);
             string code = cryptoService.GenerateConfirmationCode();
-            StudentGroupNumberEntity groupStub = studentGroupRepository.GetStub(request.StudentGroupNumberId);
 
             UserEntity user = new()
             {
                 Id = Guid.NewGuid(),
                 Email = request.Email,
-                NickName = request.NickName,
+                Nickname = request.Nickname,
                 PasswordHash = passwordHash,
-                StudentGroupNumber = groupStub,
+                StudentGroupNumberId = request.StudentGroupNumberId,
             };
 
             AccountConfirmationCodeEntity confirmationCode = new()
@@ -68,7 +67,7 @@ namespace Application.Behaviour.Users
             await codeRepository.CreateAsync(confirmationCode);
             await userRepository.CreateAsync(user);
             await unitOfWork.SaveChangesAsync();
-            await emailService.SendConfirmationMessage(request.Email, code);
+            // await emailService.SendConfirmationMessage(request.Email, code);
 
             return new ResponseContract<UserEntity>(user);
         }
@@ -81,7 +80,7 @@ namespace Application.Behaviour.Users
             RuleFor(command => command.Email).EmailAddress();
             RuleFor(command => command.Password).MinimumLength(8).MaximumLength(24).NotEmpty()
                 .Must(password => Regex.IsMatch(password, @"^\S+$")).WithMessage("В пароле не допустимы пробелы");
-            RuleFor(command => command.NickName).MinimumLength(2).MaximumLength(30);
+            RuleFor(command => command.Nickname).MinimumLength(2).MaximumLength(30);
             RuleFor(command => command.StudentGroupNumberId).NotEmpty();
         }
     }

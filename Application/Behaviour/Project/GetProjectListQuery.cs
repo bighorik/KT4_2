@@ -8,12 +8,12 @@ namespace Application.Behaviour.Project
 {
     public class GetProjectListQuery : PaginationQuery, IRequest<PaginationContract<ProjectEntity>>
     {
-        public ProjectStatus? Status { get; set; }
-        public bool? IncludeReqrutingCompletedProjects { get; set; } = false;
+        public string? Name { get; set; }
+        public bool IncludeRequitingCompletedProjects { get; set; } = false;
         public List<Guid> SkillIds { get; set; } = [];
         public Guid? UserId { get; set; }
-        public bool? FilterByIserSkills { get; set; }
-        public bool? RequireSkillLevelMatch { get; set; }
+        // public bool? FilterByUserSkills { get; set; }
+        // public bool? RequireSkillLevelMatch { get; set; }
         public bool? OnlyOwnersProjects { get; set; }
     }
 
@@ -22,7 +22,7 @@ namespace Application.Behaviour.Project
     {
         Task<PaginationContract<ProjectEntity>> IRequestHandler<GetProjectListQuery, PaginationContract<ProjectEntity>>.Handle(GetProjectListQuery request, CancellationToken cancellationToken)
         {
-            return projectRepository.GetListAsync(request);
+            return projectRepository.GetPaginatedListAsync(request);
         }
     }
 

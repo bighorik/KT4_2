@@ -1,10 +1,13 @@
 using Application.Behaviour.Users;
 using Application.Dto;
+using Application.Interfaces.Services;
 using Application.Utils;
 using Domain.Entities;
 using Mapster;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Fto.Authorization;
 using WebApi.Fto.User;
 using WebApi.Utils;
 
@@ -12,14 +15,15 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("/api/authorization")]
-    public class AuthorizationController(IMediator mediator) : ControllerBase
+    public class AuthorizationController(IMediator mediator, ITokenService tokenService) : ControllerBase
     {
+        [Authorize]
         [HttpGet("me")]
-        public async Task<ResponseContract<UserFto>> GetMe([FromBody] UserToCreateFto userDto)
+        public async Task<ResponseContract<UserFto>> GetMe()
         {
             ResponseContract<UserEntity> result = await mediator.Send(new GetUserByIdQuery()
             {
-                UserId = User.UserId(),
+                UserId = User.GetId(),
             });
 
             return result.ToDto<UserFto>();
@@ -33,14 +37,24 @@ namespace WebApi.Controllers
             return result.ToDto<UserFto>();
         }
 
-        [HttpPost("login")]
-        public async Task<ResponseContract> Login([FromBody] LoginDto loginDto)
+        [HttpPost("confirm/{code}")]
+        public Task<ResponseContract> Register([FromRoute] string code)
         {
-            ResponseContract<LoginDto> result = await mediator.Send(loginDto.Adapt<LoginUserCommand>());
+            ConfirmUserEmailCommand command = new() { Code = code };
+
+            return mediator.Send(command);
+        }
+
+        [HttpPost("login")]
+        public async Task<ResponseContract> Login([FromBody] LoginFto loginDto)
+        {
+            LoginUserCommand command = loginDto.Adapt<LoginUserCommand>();
+            command.UserAgent = Request.Headers.UserAgent!;
+            ResponseContract<LoginDto> result = await mediator.Send(command);
 
             if (result.Ok)
             {
-                Response.Cookies.Append("accessToken", result.Data!.AccessToken, new CookieOptions
+                Response.Cookies.Append("access-token", result.Data!.AccessToken, new CookieOptions
                 {
                     HttpOnly = true,
                     Secure = true,
@@ -49,7 +63,7 @@ namespace WebApi.Controllers
                     Path = "/"
                 });
 
-                Response.Cookies.Append("refreshToken", result.Data!.RefreshToken, new CookieOptions
+                Response.Cookies.Append("refresh-token", result.Data!.RefreshToken, new CookieOptions
                 {
                     HttpOnly = true,
                     Secure = true,
@@ -62,10 +76,30 @@ namespace WebApi.Controllers
             return result.Adapt<ResponseContract>();
         }
 
+        public record Res(string Access, string Refresh);
+
+        [HttpPost("fake-login")]
+        public async Task<Res> FakeLogin([FromBody] LoginFto loginDto)
+        {
+
+            UserEntity user = new()
+            {
+                Id = Guid.Parse("73819CFB-F51B-4C99-801F-A30C65C23416"),
+                Nickname = "bighorik",
+                Email = "bighorik@ya.ru",
+                PasswordHash = "",
+                StudentGroupNumberId = Guid.NewGuid(),
+            };
+
+            var a = tokenService.GenerateTokens(user);
+
+            return new(a.AccessToken, a.RefreshToken);
+        }
+
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh()
         {
-            if (!Request.Cookies.TryGetValue("refreshToken", out var refreshToken)
+            if (!Request.Cookies.TryGetValue("refresh-token", out var refreshToken)
                 || string.IsNullOrEmpty(refreshToken))
             {
                 return Unauthorized();
@@ -75,11 +109,12 @@ namespace WebApi.Controllers
                 new RefreshUserTokenCommand()
                 {
                     RefreshToken = refreshToken,
+                    UserAgent = Request.Headers.UserAgent!
                 });
 
             if (result.Ok)
             {
-                Response.Cookies.Append("accessToken", result.Data!.AccessToken, new CookieOptions
+                Response.Cookies.Append("access-token", result.Data!.AccessToken, new CookieOptions
                 {
                     HttpOnly = true,
                     Secure = true,
@@ -88,7 +123,7 @@ namespace WebApi.Controllers
                     Path = "/"
                 });
 
-                Response.Cookies.Append("refreshToken", result.Data!.RefreshToken, new CookieOptions
+                Response.Cookies.Append("refresh-token", result.Data!.RefreshToken, new CookieOptions
                 {
                     HttpOnly = true,
                     Secure = true,
@@ -109,7 +144,7 @@ namespace WebApi.Controllers
             await mediator.Send(
                 new LogoutUserCommand()
                 {
-                    UserId = User.UserId(),
+                    UserId = User.GetId(),
                 });
 
             Response.Cookies.Delete("accessToken", new CookieOptions { Path = "/" });

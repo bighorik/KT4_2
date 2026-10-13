@@ -40,17 +40,19 @@ namespace Domain.Entities
         /// <summary>
         /// Требуемые вакансии
         /// </summary>
-        public List<ProjectPositionEntity> RequiredPositions = [];
+        public List<ProjectPositionEntity> RequiredPositions { get; set; } = [];
 
         /// <summary>
         /// Ссылки на внешние ресурсы проекта
         /// </summary>
-        public List<InternetResourceLinkEntity> InternetResourceLinks = [];
+        public List<InternetResourceLinkEntity> InternetResourceLinks { get; set; } = [];
+
+        public List<MembershipApplicationEntity> MembershipApplications { get; set; } = [];
 
         /// <summary>
         /// Вложения проекта
         /// </summary>
-        public List<AttachmentEntity> Attachments = [];
+        public List<AttachmentEntity> Attachments { get; set; } = [];
 
         /// <summary>
         /// Текущий статус проекта
@@ -60,11 +62,11 @@ namespace Domain.Entities
         /// <summary>
         /// Можно ли оставить заявку в проект даже тогда, когда набор закрыт?
         /// </summary>
-        public required bool IsAdditionalRecruitmentAllowed = false;
+        public required bool IsAdditionalRecruitmentAllowed { get; set; } = false;
 
         /// <summary>
         /// Можно ли оставлять заявку в проект людям, у которых не полное совпадение по наывкам
         /// </summary>
-        public required bool IsStrictCandidatesSelection = true;
+        public required bool IsStrictCandidatesSelection { get; set; } = true;
     }
 }

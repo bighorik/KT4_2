@@ -7,38 +7,36 @@ using MediatR;
 
 namespace Application.Behaviour.MembershipApplication
 {
-    public class ApplyMembershipApplicationCommand : IRequest<ResponseContract<MembershipApplicationEntity>>
+    public class ApplyMembershipApplicationCommand : IRequest<ResponseContract>
     {
-        public Guid UserId { get; set; }
         public Guid ApplicationId { get; set; }
     }
 
     public class ApplyMembershipApplicationCommandHandler(
         IMembershipApplicationRepository applicationRepository,
-        IProjectRepository projectRepository,
+        IProjectMemberRepository memberRepository,
         IUnitOfWork unitOfWork
-        ) : IRequestHandler<ApplyMembershipApplicationCommand, ResponseContract<MembershipApplicationEntity>>
+        ) : IRequestHandler<ApplyMembershipApplicationCommand, ResponseContract>
     {
-        public async Task<ResponseContract<MembershipApplicationEntity>> Handle(ApplyMembershipApplicationCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseContract> Handle(ApplyMembershipApplicationCommand request, CancellationToken cancellationToken)
         {
-            MembershipApplicationEntity application = await applicationRepository.GetByIdAsync(request.ApplicationId);
+            MembershipApplicationEntity? app = await applicationRepository.GetFullIncludedByIdAsync(request.ApplicationId);
+            if (app == null)
+                return new ResponseContract(ErrorCodes.MembershipApplicationNotFound);
 
-            if (application == null)
-                return new ResponseContract<MembershipApplicationEntity>(ErrorCodes.MembershipApplicationNotFound);
+            ProjectMemberEntity member = new()
+            {
+                Id = Guid.NewGuid(),
+                ProjectId = app.Position.ProjectId,
+                UserId = app.UserId,
+                PositionId = app.PositionId,
+            };
 
-            ProjectEntity project = await projectRepository.GetByIdAsync(application.ProjectId);
-
-            if (project == null)
-                return new ResponseContract<MembershipApplicationEntity>(ErrorCodes.ProjectNotFound);
-
-            if (project.OwnerId != request.UserId)
-                return new ResponseContract<MembershipApplicationEntity>(ErrorCodes.UserIsNotProjectOwner);
-
-
-            application.Status = MembershipApplicationStatus.Archive;
+            await memberRepository.CreateAsync(member);
+            await applicationRepository.UpdateMembershipStatusAsync(request.ApplicationId, MembershipApplicationStatus.Approved);
             await unitOfWork.SaveChangesAsync();
 
-            return new ResponseContract<MembershipApplicationEntity>();
+            return new ResponseContract();
         }
     }
 
@@ -46,7 +44,6 @@ namespace Application.Behaviour.MembershipApplication
     {
         public ApplyMembershipApplicationCommandValidator()
         {
-            RuleFor(command => command.UserId).NotEmpty();
             RuleFor(command => command.ApplicationId).NotEmpty();
         }
     }

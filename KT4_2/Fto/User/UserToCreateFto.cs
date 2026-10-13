@@ -8,7 +8,7 @@
         /// <summary>
         /// Никнейм пользователя
         /// </summary>
-        public required string NickName { get; set; }
+        public required string Nickname { get; set; }
 
         /// <summary>
         /// Почта пользователя

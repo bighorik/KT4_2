@@ -1,6 +1,5 @@
 ﻿using Application.Interfaces.Repositories;
 using Application.Utils;
-using Domain.Entities;
 using FluentValidation;
 using MediatR;
 
@@ -8,8 +7,6 @@ namespace Application.Behaviour.ProjectMember
 {
     public class DeleteProjectMembershipCommand : IRequest<ResponseContract>
     {
-        public required Guid UserId { get; set; }
-
         public required Guid MemberId { get; set; }
     }
 
@@ -20,15 +17,10 @@ namespace Application.Behaviour.ProjectMember
     {
         public async Task<ResponseContract> Handle(DeleteProjectMembershipCommand request, CancellationToken cancellationToken)
         {
-            ProjectMemberEntity? member = await memberRepository.GetFullIncludedByIdAsync(request.MemberId);
-
-            if (member == null)
+            if (!await memberRepository.ExistsAsync(request.MemberId))
                 return new ResponseContract(ErrorCodes.ProjectMemberNotFound);
 
-            if (member.Project.OwnerId != request.UserId)
-                return new ResponseContract(ErrorCodes.UserIsNotProjectOwner);
-
-            await memberRepository.DeleteAsync(member);
+            await memberRepository.DeleteByIdAsync(request.MemberId);
 
             await unitOfWork.SaveChangesAsync();
             return new ResponseContract();
@@ -39,7 +31,6 @@ namespace Application.Behaviour.ProjectMember
     {
         public DeleteProjectMembershipCommandValidator()
         {
-            RuleFor(command => command.UserId).NotEmpty();
             RuleFor(command => command.MemberId).NotEmpty();
         }
     }

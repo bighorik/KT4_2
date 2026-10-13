@@ -9,7 +9,6 @@ namespace Application.Behaviour.Project
 {
     public record CreateProjectCommand : IRequest<ResponseContract<ProjectEntity>>
     {
-        public required string Name { get; set; }
         public required Guid OwnerId { get; set; }
     }
 
@@ -20,14 +19,13 @@ namespace Application.Behaviour.Project
     {
         public async Task<ResponseContract<ProjectEntity>> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
         {
-            // Проверяем существование пользователя 
             if (!await userRepository.ExistsAsync(request.OwnerId))
                 return new ResponseContract<ProjectEntity>(ErrorCodes.UserNotFound, request.OwnerId);
 
             ProjectEntity project = new()
             {
                 Id = Guid.NewGuid(),
-                Name = request.Name,
+                Name = "Новый проект",
                 Description = "",
                 OwnerId = request.OwnerId,
                 Attachments = [],
@@ -37,7 +35,7 @@ namespace Application.Behaviour.Project
                 IsStrictCandidatesSelection = false,
                 Status = ProjectStatus.Draft,
             };
-            await projectRepository.AddProjectAsync(project);
+            await projectRepository.CreateAsync(project);
 
             await unitOfWork.SaveChangesAsync();
             return new ResponseContract<ProjectEntity>(project);
@@ -49,7 +47,6 @@ namespace Application.Behaviour.Project
         public CreateProjectCommandValidator()
         {
             RuleFor(command => command.OwnerId).NotEmpty();
-            RuleFor(command => command.Name).NotEmpty().MaximumLength(150);
         }
     }
 }

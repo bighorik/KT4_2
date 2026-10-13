@@ -1,15 +1,13 @@
-﻿using Application.Behaviour.Project;
-using Application.Interfaces.Repositories.BaseRepositories;
-using Application.Utils;
+﻿using Application.Interfaces.Repositories.BaseRepositories;
 using Domain.Entities;
-using Domain.Enums;
-using MediatR;
 
 namespace Application.Interfaces.Repositories
 {
     public interface IProjectMemberRepository :
+        ICreateRepository<ProjectMemberEntity>,
         IGetFullIncludedByIdRepository<ProjectMemberEntity>,
-        IDeleteRepository<ProjectMemberEntity>
+        IDeleteByIdRepository,
+        IExistsRepository
     {
     }
 }

@@ -20,7 +20,7 @@ namespace Domain.Entities
         /// <summary>
         /// Навык справочного
         /// </summary>
-        public required SkillEntity Skill { get; set; }
+        public SkillEntity Skill { get; set; }
 
         /// <summary>
         /// Степень владения навыком
@@ -35,11 +35,6 @@ namespace Domain.Entities
         /// <summary>
         /// Пользователь, загрузивший файл
         /// </summary>
-        public required UserEntity User { get; set; }
-
-        /// <summary>
-        /// Скиллы пользователя
-        /// </summary>
-        public List<UserSkillEntity> UserSkills { get; set; } = [];
+        public UserEntity User { get; set; }
     }
 }

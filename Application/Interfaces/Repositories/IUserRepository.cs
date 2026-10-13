@@ -1,15 +1,18 @@
-﻿using Application.Utils;
+﻿using Application.Interfaces.Repositories.BaseRepositories;
 using Domain.Entities;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IUserRepository
+    public interface IUserRepository :
+        ICreateRepository<UserEntity>,
+        IGetByIdRepository<UserEntity>,
+        IExistsRepository
     {
-        Task<UserEntity> CreateAsync(UserEntity user);
-        Task<UserEntity?> GetByIdAsync(Guid Id);
         Task<UserEntity?> GetByEmailAsync(string email);
-        Task MarkEmailAsConfirmedAsync(Guid Id);
-        Task<bool> ExistsAsync(Guid Id);
+        Task<UserEntity> UpdateUserNicknameAsync(Guid id, string nickname);
+        Task<UserEntity> UpdateUserDescriptionAsync(Guid id, string description);
+        Task MarkEmailAsConfirmedAsync(Guid id);
         Task<bool> EmailIsAvailableAsync(string email);
+        public Task DeleteNotConfirmedByEmail(string email);
     }
 }

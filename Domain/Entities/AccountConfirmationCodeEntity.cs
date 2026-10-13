@@ -16,6 +16,11 @@
         public required Guid UserId { get; set; }
 
         /// <summary>
+        /// Пользователь, чью почту подтверждают
+        /// </summary>
+        public UserEntity User { get; set; }
+
+        /// <summary>
         /// Код подтверждения
         /// </summary>
         public required string Code { get; set; }

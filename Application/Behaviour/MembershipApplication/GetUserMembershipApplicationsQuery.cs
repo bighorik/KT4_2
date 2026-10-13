@@ -4,7 +4,6 @@ using Domain.Entities;
 using Domain.Enums;
 using FluentValidation;
 using MediatR;
-using Minio.DataModel.ILM;
 
 namespace Application.Behaviour.MembershipApplication
 {

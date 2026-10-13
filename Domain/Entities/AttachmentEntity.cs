@@ -15,12 +15,12 @@ namespace Domain.Entities
         /// <summary>
         /// Идентификатор пользователя, загрузившего файл
         /// </summary>
-        public required Guid UserId { get; set; }
+        public Guid UserId { get; set; }
 
         /// <summary>
         /// Пользователь, загрузивший файл
         /// </summary>
-        public required UserEntity User { get; set; }
+        public UserEntity User { get; set; }
 
         /// <summary>
         /// Тип вложения
@@ -30,7 +30,7 @@ namespace Domain.Entities
         /// <summary>
         /// Ключ объекта
         /// </summary>
-        public required string StorageKey { get; set; } 
+        public required string StorageKey { get; set; }
 
         /// <summary>
         /// Оригинальное название файла

@@ -1,10 +1,12 @@
+
 using Application.Behaviour.Users;
+using Application.Behaviour.UserSkill;
 using Application.Utils;
 using Domain.Entities;
-using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Fto.User;
+using WebApi.Fto.UserSkill;
 using WebApi.Utils;
 
 namespace WebApi.Controllers
@@ -13,10 +15,29 @@ namespace WebApi.Controllers
     [Route("/api/user")]
     public class UserController(IMediator mediator) : ControllerBase
     {
-        [HttpPost]
-        public async Task<ResponseContract<UserFto>> CreateUser([FromBody] UserToCreateFto userDto)
+        [HttpPatch("description")]
+        public async Task<ResponseContract<UserFto>> UpdateUserDescription([FromBody] UserToUpdateDescriptionFto dto)
         {
-            ResponseContract<UserEntity> result = await mediator.Send(userDto.Adapt<CreateUserCommand>());
+            UpdateUserDescriptionCommand command = new()
+            {
+                UserId = User.GetId(),
+                Description = dto.Description,
+            };
+
+            ResponseContract<UserEntity> result = await mediator.Send(command);
+
+            return result.ToDto<UserFto>();
+        }
+        [HttpPatch("nickname")]
+        public async Task<ResponseContract<UserFto>> UpdateUserNickname([FromBody] UserToUpdateNicknameFto dto)
+        {
+            UpdateUserNicknameCommand command = new()
+            {
+                UserId = User.GetId(),
+                Nickname = dto.Nickname,
+            };
+
+            ResponseContract<UserEntity> result = await mediator.Send(command);
 
             return result.ToDto<UserFto>();
         }

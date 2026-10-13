@@ -25,12 +25,12 @@ namespace Domain.Entities
         /// <summary>
         /// Идентификатор проекта
         /// </summary>
-        public required Guid ProjectId { get; set; }
+        public required Guid PositionId { get; set; }
 
         /// <summary>
         /// Проект 
         /// </summary>
-        public ProjectEntity Project { get; set; }
+        public ProjectPositionEntity Position { get; set; }
 
         /// <summary>
         /// Сопроводительное письмо заявки

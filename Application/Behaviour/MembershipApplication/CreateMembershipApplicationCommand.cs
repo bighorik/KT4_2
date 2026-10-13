@@ -10,31 +10,27 @@ namespace Application.Behaviour.MembershipApplication
     public class CreateMembershipApplicationCommand : IRequest<ResponseContract<MembershipApplicationEntity>>
     {
         public required Guid UserId { get; set; }
-        public required Guid ProjectId { get; set; }
+        public required Guid PositionId { get; set; }
         public string Message { get; set; } = "";
     }
 
     public class CreateMembershipApplicationCommandHandler(
-        IProjectRepository projectRepository,
-        IUserRepository userRepository,
+        IProjectPositionRepository positionRepository,
         IMembershipApplicationRepository membershipRepository,
         IUnitOfWork unitOfWork
         ) : IRequestHandler<CreateMembershipApplicationCommand, ResponseContract<MembershipApplicationEntity>>
     {
         public async Task<ResponseContract<MembershipApplicationEntity>> Handle(CreateMembershipApplicationCommand request, CancellationToken cancellationToken)
         {
-            if (!await projectRepository.ExistsAsync(request.ProjectId))
+            if (!await positionRepository.ExistsAsync(request.PositionId))
                 return new ResponseContract<MembershipApplicationEntity>(ErrorCodes.ProjectNotFound);
-
-            if (!await userRepository.ExistsAsync(request.UserId))
-                return new ResponseContract<MembershipApplicationEntity>(ErrorCodes.UserNotFound);
 
             MembershipApplicationEntity application = new()
             {
                 Id = Guid.NewGuid(),
                 UserId = request.UserId,
                 Message = request.Message,
-                ProjectId = request.ProjectId,
+                PositionId = request.PositionId,
                 Status = MembershipApplicationStatus.Pending,
             };
 
@@ -51,7 +47,7 @@ namespace Application.Behaviour.MembershipApplication
         public CreateMembershipApplicationCommandValidator()
         {
             RuleFor(command => command.UserId).NotEmpty();
-            RuleFor(command => command.ProjectId).NotEmpty();
+            RuleFor(command => command.PositionId).NotEmpty();
             RuleFor(command => command.Message).NotNull();
         }
     }

@@ -18,7 +18,7 @@
         /// <summary>
         /// Пользователь
         /// </summary>
-        public required UserEntity User { get; set; }
+        public UserEntity User { get; set; }
 
         /// <summary>
         /// Идентификатор проекта
@@ -28,6 +28,10 @@
         /// <summary>
         /// Проект 
         /// </summary>
-        public required ProjectEntity Project { get; set; }
+        public ProjectEntity Project { get; set; }
+
+        public required Guid PositionId { get; set; }
+
+        public ProjectPositionEntity Position { get; set; }
     }
 }

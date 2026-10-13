@@ -13,12 +13,12 @@
         /// <summary>
         /// В процессе набора команды
         /// </summary>
-        Recruting,
+        Recruiting,
 
         /// <summary>
         /// В процессе набора команды
         /// </summary>
-        RecrutingCompleted,
+        RecruitingCompleted,
 
         /// <summary>
         /// Набор завершен

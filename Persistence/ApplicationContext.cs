@@ -6,20 +6,24 @@ namespace Persistence
     public class ApplicationContext : DbContext
     {
         public DbSet<AttachmentEntity> Attachments { get; set; }
+        public DbSet<AccountConfirmationCodeEntity> AccountConfirmationCodes { get; set; }
         public DbSet<InternetResourceLinkEntity> InternetResourceLinks { get; set; }
         public DbSet<MembershipApplicationEntity> MembershipApplications { get; set; }
+        public DbSet<PositionSkillEntity> PositionSkills { get; set; }
         public DbSet<ProjectEntity> Projects { get; set; }
         public DbSet<ProjectMemberEntity> ProjectMember { get; set; }
         public DbSet<ProjectPositionEntity> ProjectPositions { get; set; }
         public DbSet<SkillEntity> Skills { get; set; }
         public DbSet<StudentGroupNumberEntity> StudentGroupNumbers { get; set; }
         public DbSet<UserEntity> Users { get; set; }
+        public DbSet<UserContactEntity> UserContacts { get; set; }
         public DbSet<UserSkillEntity> UserSkills { get; set; }
+        public DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=pg4;Username=postgres;Password=admin");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=admin");
         }
     }
 }

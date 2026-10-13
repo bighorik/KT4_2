@@ -2,6 +2,6 @@
 {
     public interface IExistsRepository
     {
-        Task<bool> ExistsAsync(Guid entity);
+        Task<bool> ExistsAsync(Guid id);
     }
 }

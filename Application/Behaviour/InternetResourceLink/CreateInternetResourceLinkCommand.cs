@@ -9,14 +9,12 @@ namespace Application.Behaviour.InternetResourceLink
 {
     public class CreateInternetResourceLinkCommand : IRequest<ResponseContract<InternetResourceLinkEntity>>
     {
-        public required InternetResourceLinkType Type { get; set; }
-        public required string Url { get; set; }
         public Guid ProjectId { get; set; }
     }
 
     public class CreateInternetResourceLinkCommandHandler(
         IProjectRepository projectRepository,
-        IInternetResourceLingRepository linkRepository,
+        IInternetResourceLinksRepository linkRepository,
         IUnitOfWork unitOfWork
         ) : IRequestHandler<CreateInternetResourceLinkCommand, ResponseContract<InternetResourceLinkEntity>>
     {
@@ -28,8 +26,8 @@ namespace Application.Behaviour.InternetResourceLink
             InternetResourceLinkEntity link = new()
             {
                 Id = Guid.NewGuid(),
-                Url = request.Url,
-                Type = request.Type,
+                Url = "",
+                Type = InternetResourceLinkType.Telegram,
                 ProjectId = request.ProjectId,
             };
 
@@ -44,9 +42,7 @@ namespace Application.Behaviour.InternetResourceLink
     {
         public CreateInternetResourceLinkCommandValidator()
         {
-            RuleFor(command => command.Type).NotEmpty();
             RuleFor(command => command.ProjectId).NotEmpty();
-            RuleFor(command => command.Url).NotEmpty().Url();
         }
     }
 }

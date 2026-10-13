@@ -11,7 +11,13 @@ namespace WebApi.Utils
             return obj.Adapt<ResponseContract<T>>();
         }
 
-        public static Guid UserId(this ClaimsPrincipal claim)
+        public static PaginationContract<T> ToPagination<T>(this object obj)
+        {
+            return obj.Adapt<PaginationContract<T>>();
+        }
+
+
+        public static Guid GetId(this ClaimsPrincipal claim)
         {
             Guid.TryParse(claim.FindFirst(ClaimTypes.NameIdentifier)?.Value, out Guid UserId);
 

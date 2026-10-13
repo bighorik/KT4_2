@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using WebApi.Fto.Attachments;
+using WebApi.Fto.UserContact;
 using WebApi.Fto.UserSkill;
 
 namespace WebApi.Fto.User
@@ -17,7 +18,7 @@ namespace WebApi.Fto.User
         /// <summary>
         /// Никнейм пользователя
         /// </summary>
-        public required string NickName { get; set; }
+        public required string Nickname { get; set; }
 
         /// <summary>
         /// Почта пользователя
@@ -37,16 +38,21 @@ namespace WebApi.Fto.User
         /// <summary>
         /// Описание пользователя
         /// </summary>
-        public string Description = string.Empty;
+        public string Description { get; set; } = string.Empty;
 
         /// <summary>
         /// Почта подтверждена?
         /// </summary>
-        public bool EmailConfirmed = false;
+        public bool EmailConfirmed { get; set; } = false;
 
         /// <summary>
         /// Скиллы пользователя
         /// </summary>
-        public List<UserSkillFto> UserSkills { get; set; } = [];
+        public List<UserSkillFto> Skills { get; set; } = [];
+
+        /// <summary>
+        /// Контакты пользователя
+        /// </summary>
+        public List<UserContactFto> Contacts { get; set; } = [];
     }
 }

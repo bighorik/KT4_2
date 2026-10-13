@@ -1,11 +1,16 @@
-﻿using Domain.Entities;
+﻿using Application.Behaviour.Skill;
+using Application.Interfaces.Repositories.BaseRepositories;
+using Domain.Entities;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface ISkillRepository
+    public interface ISkillRepository :
+        IExistsRepository,
+        ICreateRepository<SkillEntity>,
+        IDeleteByIdRepository,
+        IGetPaginatedList<SkillEntity, GetSkillsQuery>
     {
-        Task<bool> ExistsAsync(Guid Id);
-        SkillEntity GetStub(Guid Id);
-        List<SkillEntity> GetStubList(IEnumerable<Guid> Id);
+        Task<SkillEntity> UpdateSkillNameAsync(Guid skillId, string name);
+        Task<SkillEntity?> GetNotAddedAsync(Guid userId);
     }
 }

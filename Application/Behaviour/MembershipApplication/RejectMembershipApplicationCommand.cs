@@ -7,38 +7,25 @@ using MediatR;
 
 namespace Application.Behaviour.MembershipApplication
 {
-    public class RejectMembershipApplicationCommand : IRequest<ResponseContract<MembershipApplicationEntity>>
+    public class RejectMembershipApplicationCommand : IRequest<ResponseContract>
     {
-        public Guid UserId { get; set; }
         public Guid ApplicationId { get; set; }
     }
 
     public class RejectMembershipApplicationCommandHandler(
         IMembershipApplicationRepository applicationRepository,
-        IProjectRepository projectRepository,
         IUnitOfWork unitOfWork
-        ) : IRequestHandler<RejectMembershipApplicationCommand, ResponseContract<MembershipApplicationEntity>>
+        ) : IRequestHandler<RejectMembershipApplicationCommand, ResponseContract>
     {
-        public async Task<ResponseContract<MembershipApplicationEntity>> Handle(RejectMembershipApplicationCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseContract> Handle(RejectMembershipApplicationCommand request, CancellationToken cancellationToken)
         {
-            MembershipApplicationEntity application = await applicationRepository.GetByIdAsync(request.ApplicationId);
+            if (!await applicationRepository.ExistsAsync(request.ApplicationId))
+                return new ResponseContract(ErrorCodes.MembershipApplicationNotFound);
 
-            if (application == null)
-                return new ResponseContract<MembershipApplicationEntity>(ErrorCodes.MembershipApplicationNotFound);
-
-            ProjectEntity project = await projectRepository.GetByIdAsync(application.ProjectId);
-
-            if (project == null)
-                return new ResponseContract<MembershipApplicationEntity>(ErrorCodes.ProjectNotFound);
-
-            if (project.OwnerId != request.UserId)
-                return new ResponseContract<MembershipApplicationEntity>(ErrorCodes.UserIsNotProjectOwner);
-
-
-            application.Status = MembershipApplicationStatus.Rejected;
+            await applicationRepository.UpdateMembershipStatusAsync(request.ApplicationId, MembershipApplicationStatus.Rejected);
             await unitOfWork.SaveChangesAsync();
 
-            return new ResponseContract<MembershipApplicationEntity>();
+            return new ResponseContract();
         }
     }
 
@@ -46,7 +33,6 @@ namespace Application.Behaviour.MembershipApplication
     {
         public RejectMembershipApplicationCommandValidator()
         {
-            RuleFor(command => command.UserId).NotEmpty();
             RuleFor(command => command.ApplicationId).NotEmpty();
         }
     }
